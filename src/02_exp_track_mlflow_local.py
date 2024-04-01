@@ -40,7 +40,7 @@ with mlflow.start_run():
     }
     mlflow.log_params(params)
 
-    log_reg = LogisticRegression(**params).fit(X,y)
+    log_reg = LogisticRegression(**params).fit(X, y)
     y_pred = log_reg.predict(X)
 
     metrics = {
@@ -52,13 +52,19 @@ with mlflow.start_run():
     mlflow.sklearn.log_model(log_reg, artifact_path=ARTIFACT_PATH)
     print(f"Default artifacts_uri = [{mlflow.get_artifact_uri()}]")
 
-# client = MlflowClient()
-# try:
-#     client.get_registered_model()
-# except MlflowException:
-#     print("Not possible to access mlflow registry")
+client = MlflowClient()
 
+try:
+    runs = client.search_runs(experiment_ids=[experiment.experiment_id])
+    run_id = runs[0].info.run_id
+    print(f"run_id = {run_id}")
 
+    mlflow.register_model(
+        model_uri=f"runs:/{run_id}/models",
+        name='iris-classifier'
+    )
+except MlflowException:
+    print("Not possible to access mlflow registry")
 
 
 
