@@ -21,12 +21,12 @@ def load_pickle(filename):
 @click.option(
     "--data_path",
     default="./output",
-    help="Location where the processed NYC taxi trip data was saved"
+    help="Location where the processed NYC taxi trip data was saved",
 )
 @click.option(
     "--num_trials",
     default=10,
-    help="The number of parameter evaluations for the optimizer to explore"
+    help="The number of parameter evaluations for the optimizer to explore",
 )
 def run_optimization(data_path: str, num_trials: int):
     mlflow.sklearn.autolog(disable=True)
@@ -36,12 +36,12 @@ def run_optimization(data_path: str, num_trials: int):
 
     def objective(trial):
         params = {
-            'n_estimators': trial.suggest_int('n_estimators', 10, 50, 1),
-            'max_depth': trial.suggest_int('max_depth', 1, 20, 1),
-            'min_samples_split': trial.suggest_int('min_samples_split', 2, 10, 1),
-            'min_samples_leaf': trial.suggest_int('min_samples_leaf', 1, 4, 1),
-            'random_state': 42,
-            'n_jobs': -1
+            "n_estimators": trial.suggest_int("n_estimators", 10, 50, 1),
+            "max_depth": trial.suggest_int("max_depth", 1, 20, 1),
+            "min_samples_split": trial.suggest_int("min_samples_split", 2, 10, 1),
+            "min_samples_leaf": trial.suggest_int("min_samples_leaf", 1, 4, 1),
+            "random_state": 42,
+            "n_jobs": -1,
         }
         with mlflow.start_run():
             mlflow.log_params(params)
@@ -58,5 +58,5 @@ def run_optimization(data_path: str, num_trials: int):
     study.optimize(objective, n_trials=num_trials)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_optimization()

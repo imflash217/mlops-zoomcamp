@@ -20,7 +20,7 @@ EXPERIMENT_NAME = "zoomcamp_mlflow_exp_01"
 # print(f"Tracking URI: [{mlflow.get_tracking_uri()}]")
 # print(DATA_ROOT_PATH)
 
-print(mlflow.set_tracking_uri(TRACKING_URI))    # TODO: fix this
+print(mlflow.set_tracking_uri(TRACKING_URI))  # TODO: fix this
 print(f"Tracking URI: [{mlflow.get_tracking_uri()}]")
 
 # experiment = mlflow.get_experiment_by_name(EXPERIMENT_NAME)
@@ -43,9 +43,7 @@ with mlflow.start_run():
     log_reg = LogisticRegression(**params).fit(X, y)
     y_pred = log_reg.predict(X)
 
-    metrics = {
-        "accuracy": accuracy_score(y_true=y, y_pred=y_pred)
-    }
+    metrics = {"accuracy": accuracy_score(y_true=y, y_pred=y_pred)}
 
     mlflow.log_metrics(metrics)
 
@@ -59,29 +57,6 @@ try:
     run_id = runs[0].info.run_id
     print(f"run_id = {run_id}")
 
-    mlflow.register_model(
-        model_uri=f"runs:/{run_id}/models",
-        name='iris-classifier'
-    )
+    mlflow.register_model(model_uri=f"runs:/{run_id}/models", name="iris-classifier")
 except MlflowException:
     print("Not possible to access mlflow registry")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
